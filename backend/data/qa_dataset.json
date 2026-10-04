@@ -1,0 +1,674 @@
+[
+  {
+    "id": "health-1",
+    "domain": "healthcare",
+    "language": "as",
+    "question_en": "What should I do if I have fever symptoms?",
+    "question_native": "মোৰ জ্বৰৰ লক্ষণ থাকিলে মই কি কৰিব লাগে?",
+    "answer_en": "Visit your nearest Primary Health Centre (PHC). If fever persists more than 3 days, seek immediate medical attention. Stay hydrated and rest.",
+    "answer_native": "আপোনাৰ নিকটতম প্ৰাথমিক স্বাস্থ্য কেন্দ্ৰ (PHC) লৈ যাওক। যদি জ্বৰ ৩ দিনতকৈ অধিক সময় থাকে, তৎক্ষণাৎ চিকিৎসা লওক। পানী খাওক আৰু জিৰণি লওক।"
+  },
+  {
+    "id": "health-2",
+    "domain": "healthcare",
+    "language": "ne",
+    "question_en": "How do I register for Ayushman Bharat scheme?",
+    "question_native": "आयुष्मान भारत योजनामा कसरी दर्ता गर्ने?",
+    "answer_en": "Visit your nearest Common Service Centre (CSC) with Aadhaar card and ration card to register for Ayushman Bharat health coverage.",
+    "answer_native": "आयुष्मान भारत स्वास्थ्य कभरेजको लागि दर्ता गर्न आधार कार्ड र राशन कार्डसहित नजिकको साझा सेवा केन्द्र (CSC) मा जानुहोस्।"
+  },
+  {
+    "id": "gov-1",
+    "domain": "governance",
+    "language": "as",
+    "question_en": "How can I apply for a caste certificate?",
+    "question_native": "মই কেনেকৈ জাতি প্ৰমাণ পত্ৰৰ বাবে আবেদন কৰিব পাৰো?",
+    "answer_en": "Apply online through the Assam government's e-District portal, or visit your local Circle Officer's office with required documents (residence proof, family lineage proof).",
+    "answer_native": "অসম চৰকাৰৰ ই-জিলা পৰ্টেলৰ জৰিয়তে অনলাইনত আবেদন কৰক, বা প্ৰয়োজনীয় নথিপত্ৰসহ স্থানীয় চাৰ্কল অফিচাৰৰ কাৰ্যালয়লৈ যাওক।"
+  },
+  {
+    "id": "gov-2",
+    "domain": "governance",
+    "language": "ne",
+    "question_en": "How do I apply for a domicile certificate in Sikkim?",
+    "question_native": "सिक्किममा अधिवास प्रमाणपत्रको लागि कसरी आवेदन दिने?",
+    "answer_en": "Applications can be submitted through the Sikkim government's online portal or at the District Collector's office with proof of residence and identity documents.",
+    "answer_native": "आवेदन सिक्किम सरकारको अनलाइन पोर्टल मार्फत वा जिल्ला कलेक्टरको कार्यालयमा निवास र परिचयको प्रमाणसहित पेश गर्न सकिन्छ।"
+  },
+  {
+    "id": "edu-1",
+    "domain": "education",
+    "language": "as",
+    "question_en": "What is the eligibility for the National Scholarship Portal?",
+    "question_native": "ৰাষ্ট্ৰীয় বৃত্তি পৰ্টেলৰ যোগ্যতা কি?",
+    "answer_en": "Students from economically weaker sections with family income below the specified threshold and minimum academic marks (varies by scheme) are eligible. Apply at scholarships.gov.in.",
+    "answer_native": "নির্দিষ্ট আয়ৰ সীমাৰ তলত থকা পৰিয়ালৰ আৰু ন্যূনতম শৈক্ষিক নম্বৰ থকা শিক্ষাৰ্থী যোগ্য। scholarships.gov.in ত আবেদন কৰক।"
+  },
+  {
+    "id": "edu-2",
+    "domain": "education",
+    "language": "ne",
+    "question_en": "Are there special scholarships for Northeast students?",
+    "question_native": "उत्तर-पूर्वका विद्यार्थीहरूको लागि विशेष छात्रवृत्ति छन्?",
+    "answer_en": "Yes, the Ministry of DoNER offers scholarships for NE students, and NESTS (North Eastern Council) provides additional education support schemes.",
+    "answer_native": "हो, DoNER मन्त्रालयले उत्तर-पूर्वका विद्यार्थीहरूका लागि छात्रवृत्ति प्रदान गर्दछ, र NESTS ले थप शिक्षा सहायता योजनाहरू उपलब्ध गराउँछ।"
+  },
+  {
+    "id": "rural-1",
+    "domain": "rural_development",
+    "language": "as",
+    "question_en": "How do I get a MGNREGA job card?",
+    "question_native": "মই কেনেকৈ MGNREGA জব কাৰ্ড পাব পাৰো?",
+    "answer_en": "Apply at your Gram Panchayat office with proof of residence. Job cards are issued to adult members of rural households willing to do unskilled manual work.",
+    "answer_native": "নিবাসৰ প্ৰমাণসহ আপোনাৰ গাঁও পঞ্চায়ত কাৰ্যালয়ত আবেদন কৰক। গ্ৰাম্য পৰিয়ালৰ প্ৰাপ্তবয়স্ক সদস্যক জব কাৰ্ড দিয়া হয়।"
+  },
+  {
+    "id": "rural-2",
+    "domain": "rural_development",
+    "language": "ne",
+    "question_en": "What support is available for bamboo farmers in rural areas?",
+    "question_native": "ग्रामीण क्षेत्रका बाँस किसानहरूका लागि के सहयोग उपलब्ध छ?",
+    "answer_en": "The National Bamboo Mission provides subsidies for bamboo cultivation, processing units, and market linkage support for farmers in NE states.",
+    "answer_native": "राष्ट्रिय बाँस मिशनले बाँस खेती, प्रशोधन एकाइ, र बजार सम्पर्कको लागि सहयोग उपलब्ध गराउँछ।"
+  },
+  {
+    "id": "health-3",
+    "domain": "healthcare",
+    "language": "bo",
+    "_note": "Bodo (Devanagari script). No public MT/ASR engine reliably covers Bodo — this entry is matched natively (no translation round-trip). Placeholder phrasing; verify with a native Bodo speaker before the real demo.",
+    "question_en": "Where is the nearest health centre?",
+    "question_native": "जोबथार हेल्थ सेन्टार बारि दं?",
+    "answer_en": "Visit your nearest Primary Health Centre (PHC). Community health workers (ASHA) can also guide you to the nearest facility.",
+    "answer_native": "नोंथाङनि जोबथार Primary Health Centre (PHC) खउ नाय। ASHA कर्मीफोरा नोंखौ बांद्राय जायगाव थाब्लांनो मदद खालामनो हागौ।"
+  },
+  {
+    "id": "gov-3",
+    "domain": "governance",
+    "language": "bo",
+    "_note": "Bodo — native retrieval only, no MT dependency.",
+    "question_en": "How do I apply for a residence certificate?",
+    "question_native": "नोंथाङ बासिन्दा प्रमाणपत्रनि थाखाय बां आवेदन खालामनो हागौ?",
+    "answer_en": "Visit your local Circle Officer or Block office with proof of residence and identity documents to apply for a residence certificate.",
+    "answer_native": "बासिन्दा प्रमाणपत्रनि थाखाय नोंथाङनि बासिन्दा आरो पहिचाननि दलिलजों बादि Circle Officer एबा Block office-आव थांगोन।"
+  },
+  {
+    "id": "edu-3",
+    "domain": "education",
+    "language": "bo",
+    "_note": "Bodo — native retrieval only, no MT dependency.",
+    "question_en": "Are there scholarships for Bodo-medium students?",
+    "question_native": "बर'मादि गामिनि पिपिलफोरनि थाखाय स्कलारसिप दं मो?",
+    "answer_en": "Yes, the Bodoland Territorial Region and state education departments offer scholarships for Bodo-medium students — check with your school or district education office.",
+    "answer_native": "आ'ओ, Bodoland Territorial Region आरो राज्यनि शिक्षा विभागआ बर'मादि गामिनि पिपिलफोरनि थाखाय स्कलारसिप होदों — नोंथाङनि स्कुल एबा जिल्ला शिक्षा दफ्तारजों सोदोब।"
+  },
+  {
+    "id": "rural-3",
+    "domain": "rural_development",
+    "language": "bo",
+    "_note": "Bodo — native retrieval only, no MT dependency.",
+    "question_en": "How do I get a job card under MGNREGA?",
+    "question_native": "MGNREGA-आव जब कार्ड मोनथिनो बां?",
+    "answer_en": "Apply at your Gram Panchayat office with proof of residence. Adult members of rural households willing to do unskilled manual work are eligible.",
+    "answer_native": "नोंथाङनि बासिन्दा दलिलजों Gram Panchayat दफ्तारआव आवेदन खालामगोन। गामिनि निजोरनि बयस्क सोदोबफोरा जब कार्ड मोनो हागौ।"
+  },
+  {
+    "id": "health-4",
+    "domain": "healthcare",
+    "language": "en",
+    "question_en": "What is covered under Ayushman Bharat (PM-JAY)?",
+    "answer_en": "Ayushman Bharat (PM-JAY) provides free hospitalization coverage up to ₹5 lakh per family per year for secondary and tertiary care at empanelled public and private hospitals. Eligibility is based on the SECC database — check your eligibility at pmjay.gov.in or via a nearby Common Service Centre."
+  },
+  {
+    "id": "health-5",
+    "domain": "healthcare",
+    "language": "en",
+    "question_en": "What does an ASHA worker help with?",
+    "answer_en": "ASHA (Accredited Social Health Activist) workers are village-level health volunteers who help with maternal and child health guidance, immunization reminders, basic first aid, and connecting families to the nearest PHC or hospital. Every village has an assigned ASHA worker under the National Health Mission."
+  },
+  {
+    "id": "health-6",
+    "domain": "healthcare",
+    "language": "en",
+    "question_en": "What support is available for pregnant women under government schemes?",
+    "answer_en": "Janani Suraksha Yojana (JSY) provides cash assistance for institutional delivery to reduce maternal and infant mortality. Pradhan Mantri Matru Vandana Yojana (PMMVY) additionally provides direct cash benefits to pregnant and lactating mothers. Register through your local Anganwadi centre or ASHA worker."
+  },
+  {
+    "id": "health-7",
+    "domain": "healthcare",
+    "language": "en",
+    "question_en": "How does child vaccination work in rural areas?",
+    "answer_en": "Mission Indradhanush provides free vaccination against major childhood diseases through scheduled immunization camps at Anganwadi centres and PHCs. Vaccination schedules are tracked in the child's health card — ask your ASHA worker for the nearest camp date."
+  },
+  {
+    "id": "health-8",
+    "domain": "healthcare",
+    "language": "en",
+    "question_en": "Where can I get mental health support, or talk to someone about stress or anxiety?",
+    "answer_en": "Tele-MANAS is a free, 24/7 government mental health helpline (14416) offering counselling in multiple Indian languages, including support for NE regional languages. District Mental Health Programme (DMHP) centres also provide free in-person consultations at district hospitals."
+  },
+  {
+    "id": "health-9",
+    "domain": "healthcare",
+    "language": "en",
+    "question_en": "How is tuberculosis (TB) treatment supported by the government?",
+    "answer_en": "Under the Nikshay Poshan Yojana, TB patients receive free treatment and monthly nutritional support of ₹500 during the treatment period. Report symptoms like prolonged cough or weight loss to your nearest PHC for free testing and treatment under the National TB Elimination Programme."
+  },
+  {
+    "id": "health-10",
+    "domain": "healthcare",
+    "language": "en",
+    "question_en": "What should I do in case of a snakebite in a remote area?",
+    "answer_en": "Keep the person calm and still, immobilize the bitten limb, and get to the nearest PHC or hospital immediately — do not apply a tourniquet or attempt to suck out venom. Anti-snake venom (ASV) is stocked at most district hospitals and many PHCs in high-risk NE areas."
+  },
+  {
+    "id": "gov-4",
+    "domain": "governance",
+    "language": "en",
+    "question_en": "How do I get a Scheduled Tribe (ST) certificate?",
+    "answer_en": "Apply at your Circle Officer or Sub-Divisional Officer's (SDO) office with proof of tribal lineage, residence proof, and a recommendation from the village headman/gaon burah. Processing and required documents vary slightly by state — check your state's e-District portal for the exact list."
+  },
+  {
+    "id": "gov-5",
+    "domain": "governance",
+    "language": "en",
+    "question_en": "What is an Inner Line Permit and who needs one?",
+    "answer_en": "An Inner Line Permit (ILP) is a travel document required for non-residents entering protected states like Arunachal Pradesh, Nagaland, Mizoram, and Manipur. Apply online through the respective state's ILP portal or at designated ILP counters at entry points."
+  },
+  {
+    "id": "gov-6",
+    "domain": "governance",
+    "language": "en",
+    "question_en": "How do I check or correct my land records?",
+    "answer_en": "Assam's Dharitree portal (dharitree.assam.gov.in) lets you view and download land records (jamabandi) online. For corrections, visit your local Circle Office with the original land documents and identity proof."
+  },
+  {
+    "id": "gov-7",
+    "domain": "governance",
+    "language": "en",
+    "question_en": "How do I file a complaint against a government office?",
+    "answer_en": "Use CPGRAMS (pgportal.gov.in), the central government's public grievance portal, to file and track complaints against any government department. Most NE state governments also have their own grievance redressal portals — search '[state name] grievance portal'."
+  },
+  {
+    "id": "gov-8",
+    "domain": "governance",
+    "language": "en",
+    "question_en": "How do I apply for an income certificate?",
+    "answer_en": "Apply through your state's e-District portal or at the Circle Officer's office with salary slips, land records, or a self-declaration form as proof of income. Income certificates are commonly needed for scholarship and scheme applications."
+  },
+  {
+    "id": "gov-9",
+    "domain": "governance",
+    "language": "en",
+    "question_en": "How do I register a birth or death?",
+    "answer_en": "Birth and death registration is done at your local municipal office or Gram Panchayat within 21 days of the event; late registration is also possible with an affidavit. This can also be done online through the Civil Registration System (CRS) portal in most states."
+  },
+  {
+    "id": "gov-10",
+    "domain": "governance",
+    "language": "en",
+    "question_en": "How do I update my Aadhaar address after moving?",
+    "answer_en": "Update your Aadhaar address online at myaadhaar.uidai.gov.in using a valid address proof, or visit your nearest Aadhaar Seva Kendra or Common Service Centre in person."
+  },
+  {
+    "id": "edu-4",
+    "domain": "education",
+    "language": "en",
+    "question_en": "What scholarships exist specifically for tribal students in the Northeast?",
+    "answer_en": "The Ministry of Tribal Affairs offers Pre-Matric and Post-Matric Scholarships for ST students, and NESTS (North Eastern Council) runs additional region-specific education support. Eklavya Model Residential Schools (EMRS) also provide free quality education for tribal students from Class 6 onward."
+  },
+  {
+    "id": "edu-5",
+    "domain": "education",
+    "language": "en",
+    "question_en": "How do I apply through the National Scholarship Portal?",
+    "answer_en": "Register at scholarships.gov.in with your Aadhaar-linked bank account, academic records, and income certificate. Applications typically open at the start of the academic year — check the portal for current deadlines as they vary by scheme."
+  },
+  {
+    "id": "edu-6",
+    "domain": "education",
+    "language": "en",
+    "question_en": "What is DIKSHA and how can students use it?",
+    "answer_en": "DIKSHA is the government's free digital learning platform offering NCERT-aligned content, video lessons, and practice material in multiple regional languages, accessible via app or web — useful for students in areas with limited access to schools or teachers."
+  },
+  {
+    "id": "edu-7",
+    "domain": "education",
+    "language": "en",
+    "question_en": "Is there support for skill training instead of a college degree?",
+    "answer_en": "Pradhan Mantri Kaushal Vikas Yojana (PMKVY) offers free short-term skill training with certification in trades like electrical work, tailoring, and IT, often with placement assistance. Training centres exist in most district headquarters — search 'PMKVY training centre near me' or ask at your district Skill Development office."
+  },
+  {
+    "id": "edu-8",
+    "domain": "education",
+    "language": "en",
+    "question_en": "Can I continue schooling if I dropped out?",
+    "answer_en": "The National Institute of Open Schooling (NIOS) allows students to complete secondary and senior secondary education flexibly, without needing to attend regular school. Registration is open through NIOS regional centres or online at nios.ac.in."
+  },
+  {
+    "id": "edu-9",
+    "domain": "education",
+    "language": "en",
+    "question_en": "What mid-day meal benefits do government schools provide?",
+    "answer_en": "The Mid-Day Meal Scheme (now PM POSHAN) provides a free nutritious meal to all children in government and government-aided schools up to Class 8, aimed at improving nutrition and school attendance."
+  },
+  {
+    "id": "rural-4",
+    "domain": "rural_development",
+    "language": "en",
+    "question_en": "What is PM-KISAN and how do farmers apply?",
+    "answer_en": "PM-KISAN provides ₹6,000 per year in direct income support to eligible small and marginal farmer families, paid in three installments. Apply online at pmkisan.gov.in or through your nearest Common Service Centre with land records and Aadhaar."
+  },
+  {
+    "id": "rural-5",
+    "domain": "rural_development",
+    "language": "en",
+    "question_en": "How do I apply for a house under PM Awas Yojana - Gramin?",
+    "answer_en": "PM Awas Yojana - Gramin (PMAY-G) provides financial assistance for building pucca houses for eligible rural families. Applications are based on the SECC list and verified through your Gram Panchayat — contact your Panchayat office to check your eligibility status."
+  },
+  {
+    "id": "rural-6",
+    "domain": "rural_development",
+    "language": "en",
+    "question_en": "What support is there for farmers to get crop loans?",
+    "answer_en": "The Kisan Credit Card (KCC) scheme provides farmers with affordable short-term credit for crop production, at subsidized interest rates. Apply through any nationalized bank or regional rural bank with land ownership documents."
+  },
+  {
+    "id": "rural-7",
+    "domain": "rural_development",
+    "language": "en",
+    "question_en": "What government support exists for silk/sericulture farmers in the Northeast?",
+    "answer_en": "The Central Silk Board and state sericulture departments offer subsidies, training, and market linkage support for silk farmers, including Assam's traditional Muga and Eri silk producers. Contact your district Sericulture Department office for eligibility and application details."
+  },
+  {
+    "id": "rural-8",
+    "domain": "rural_development",
+    "language": "en",
+    "question_en": "How can rural women join a Self-Help Group (SHG) for income support?",
+    "answer_en": "The National Rural Livelihood Mission (NRLM) helps rural women form and join Self-Help Groups (SHGs), providing access to low-interest loans, skill training, and market linkages for small businesses. Contact your Gram Panchayat or Block office to find or start a group in your area."
+  },
+  {
+    "id": "rural-9",
+    "domain": "rural_development",
+    "language": "en",
+    "question_en": "Is there support for building or repairing rural roads?",
+    "answer_en": "Pradhan Mantri Gram Sadak Yojana (PMGSY) funds the construction and maintenance of all-weather roads connecting unconnected rural habitations. Road proposals are raised through the Gram Panchayat and approved at the district/state level."
+  },
+  {
+    "id": "rural-10",
+    "domain": "rural_development",
+    "language": "en",
+    "question_en": "What help is available for livestock and dairy farmers?",
+    "answer_en": "Rashtriya Gokul Mission and state animal husbandry departments provide subsidies for cattle breeding, veterinary care, and dairy infrastructure. Free mobile veterinary services are also available in many NE districts — contact your Block Veterinary Officer."
+  },
+  {
+    "id": "health-11",
+    "domain": "healthcare",
+    "language": "en",
+    "question_en": "What free services does an Anganwadi centre provide for young children?",
+    "answer_en": "Anganwadi centres under ICDS provide free supplementary nutrition, health checkups, immunization referrals, and early childhood education for children under 6, along with nutrition support for pregnant and lactating mothers."
+  },
+  {
+    "id": "health-12",
+    "domain": "healthcare",
+    "language": "en",
+    "question_en": "Is there a free ambulance service I can call in an emergency?",
+    "answer_en": "Dial 108 for free emergency ambulance service (available in most states including NE India) or 102 for non-emergency medical transport such as taking a pregnant woman to a hospital."
+  },
+  {
+    "id": "health-13",
+    "domain": "healthcare",
+    "language": "en",
+    "question_en": "Where can I get a free eye checkup or cataract surgery?",
+    "answer_en": "The National Programme for Control of Blindness offers free eye checkup camps and cataract surgery at district hospitals and through partner NGO eye camps — ask your PHC for the next scheduled camp in your area."
+  },
+  {
+    "id": "health-14",
+    "domain": "healthcare",
+    "language": "en",
+    "question_en": "How can I get tested for HIV/AIDS confidentially?",
+    "answer_en": "Integrated Counselling and Testing Centres (ICTC), run under NACO (National AIDS Control Organisation), offer free and confidential HIV testing and counselling at district hospitals. Free antiretroviral treatment (ART) is also available at designated ART centres."
+  },
+  {
+    "id": "health-15",
+    "domain": "healthcare",
+    "language": "en",
+    "question_en": "Is there free screening for diabetes and high blood pressure?",
+    "answer_en": "NPCDCS (National Programme for Prevention and Control of Non-Communicable Diseases) provides free screening for diabetes, hypertension, and common cancers at PHCs and community health camps for adults above 30."
+  },
+  {
+    "id": "health-16",
+    "domain": "healthcare",
+    "language": "en",
+    "question_en": "How do informal or daily-wage workers get health insurance?",
+    "answer_en": "Workers without formal employment can register under PM-JAY (if SECC-eligible) or state-specific health insurance schemes for unorganized sector workers. Registration is often available through the e-Shram portal, which also connects workers to other welfare benefits."
+  },
+  {
+    "id": "gov-11",
+    "domain": "governance",
+    "language": "en",
+    "question_en": "How do I apply for a passport, especially in a border area?",
+    "answer_en": "Apply online at passportindia.gov.in and book an appointment at your nearest Passport Seva Kendra. Residents of border districts in NE states may need an additional police verification step — check requirements specific to your district when applying."
+  },
+  {
+    "id": "gov-12",
+    "domain": "governance",
+    "language": "en",
+    "question_en": "How do I get free legal help if I can't afford a lawyer?",
+    "answer_en": "The National Legal Services Authority (NALSA) provides free legal aid and representation for eligible citizens, including women, SC/ST members, and those below a certain income. Contact your District Legal Services Authority (DLSA) office for assistance."
+  },
+  {
+    "id": "gov-13",
+    "domain": "governance",
+    "language": "en",
+    "question_en": "How do I get a disability certificate?",
+    "answer_en": "Apply for a Unique Disability ID (UDID) at udid.gov.in or through your district hospital's medical board, which assesses and issues the disability certificate needed for reservations, pensions, and other benefits."
+  },
+  {
+    "id": "gov-14",
+    "domain": "governance",
+    "language": "en",
+    "question_en": "How do I register a marriage legally?",
+    "answer_en": "Marriages can be registered under the Hindu Marriage Act, Special Marriage Act, or applicable personal law at your local Sub-Registrar or Marriage Registration office, with identity proof, age proof, and witnesses."
+  },
+  {
+    "id": "gov-15",
+    "domain": "governance",
+    "language": "en",
+    "question_en": "Where do I complain about a faulty product or bad service?",
+    "answer_en": "File a complaint with the National Consumer Helpline (1915) or on the e-Daakhil portal for consumer disputes, which allows online filing of consumer complaints without needing a lawyer."
+  },
+  {
+    "id": "gov-16",
+    "domain": "governance",
+    "language": "en",
+    "question_en": "How do senior citizens apply for an old-age pension?",
+    "answer_en": "Apply for the Indira Gandhi National Old Age Pension Scheme (IGNOAPS) or your state's specific old-age pension scheme at the Gram Panchayat or Social Welfare Department office, with age and income proof."
+  },
+  {
+    "id": "gov-17",
+    "domain": "governance",
+    "language": "en",
+    "question_en": "How do I get a PAN card?",
+    "answer_en": "Apply online through the NSDL or UTIITSL portal with Aadhaar and identity proof, or visit a nearby Common Service Centre for assisted application. A PAN card is required for most financial transactions and income tax filing."
+  },
+  {
+    "id": "gov-18",
+    "domain": "governance",
+    "language": "en",
+    "question_en": "How do I add or correct my name on the voter list?",
+    "answer_en": "Use the Voter Helpline app or nvsp.in (National Voter Service Portal) to apply for new voter registration, correction, or transfer of your voter ID, or visit your local Electoral Registration Office."
+  },
+  {
+    "id": "edu-10",
+    "domain": "education",
+    "language": "en",
+    "question_en": "Are there special hostel schemes for girl students?",
+    "answer_en": "Kasturba Gandhi Balika Vidyalaya (KGBV) provides free residential schooling for girls from disadvantaged backgrounds in educationally backward blocks, covering food, lodging, and education up to Class 12 in many states."
+  },
+  {
+    "id": "edu-11",
+    "domain": "education",
+    "language": "en",
+    "question_en": "Can adults who never went to school learn to read and write?",
+    "answer_en": "ULLAS (New India Literacy Programme) offers free adult literacy classes at community centres, focusing on basic reading, writing, and digital literacy for adults who missed formal education. Ask your Gram Panchayat about the nearest learning centre."
+  },
+  {
+    "id": "edu-12",
+    "domain": "education",
+    "language": "en",
+    "question_en": "Are there scholarships to study abroad for students from disadvantaged backgrounds?",
+    "answer_en": "The National Overseas Scholarship scheme supports SC, ST, and other eligible students pursuing master's or PhD programs abroad, covering tuition and living expenses. Applications open annually through the Ministry of Social Justice and Empowerment portal."
+  },
+  {
+    "id": "edu-13",
+    "domain": "education",
+    "language": "en",
+    "question_en": "Is there support for sports talent among students?",
+    "answer_en": "Khelo India provides scholarships, training support, and sports infrastructure access for talented young athletes, identified through state and national-level trials. Register interest through your school's physical education teacher or the Khelo India portal."
+  },
+  {
+    "id": "edu-14",
+    "domain": "education",
+    "language": "en",
+    "question_en": "How can I learn basic computer and internet skills for free?",
+    "answer_en": "PMGDISHA (Pradhan Mantri Gramin Digital Saksharta Abhiyan) offers free digital literacy training in rural areas, teaching basic computer, internet, and digital payment skills. Enquire at your nearest Common Service Centre."
+  },
+  {
+    "id": "edu-15",
+    "domain": "education",
+    "language": "en",
+    "question_en": "Do government schools provide free textbooks and uniforms?",
+    "answer_en": "Under Samagra Shiksha, government schools provide free textbooks and, in many states, free uniforms to students up to Class 8, with additional support for girls and children with disabilities."
+  },
+  {
+    "id": "rural-11",
+    "domain": "rural_development",
+    "language": "en",
+    "question_en": "How do farmers get compensation if their crops fail due to weather?",
+    "answer_en": "Pradhan Mantri Fasal Bima Yojana (PMFBY) provides crop insurance covering losses from natural calamities, pests, and diseases at a low farmer premium. Apply through your bank, Common Service Centre, or insurance company before the crop season deadline."
+  },
+  {
+    "id": "rural-12",
+    "domain": "rural_development",
+    "language": "en",
+    "question_en": "How do rural households get a free or subsidized LPG gas connection?",
+    "answer_en": "PM Ujjwala Yojana provides free LPG gas connections to women from below-poverty-line households, reducing dependence on firewood for cooking. Apply through your nearest LPG distributor with your BPL ration card and Aadhaar."
+  },
+  {
+    "id": "rural-13",
+    "domain": "rural_development",
+    "language": "en",
+    "question_en": "Is there a scheme for piped drinking water in villages?",
+    "answer_en": "Jal Jeevan Mission aims to provide functional household tap connections with piped drinking water to every rural home. Check your Gram Panchayat for the village's water supply implementation status and connection process."
+  },
+  {
+    "id": "rural-14",
+    "domain": "rural_development",
+    "language": "en",
+    "question_en": "Is there financial help to build a toilet at home?",
+    "answer_en": "Swachh Bharat Mission - Gramin provides financial incentive (typically around ₹12,000) to eligible rural households for constructing a household toilet. Apply through your Gram Panchayat with proof of not already having a toilet."
+  },
+  {
+    "id": "rural-15",
+    "domain": "rural_development",
+    "language": "en",
+    "question_en": "What support exists for tribal communities collecting forest produce?",
+    "answer_en": "Van Dhan Vikas Yojana helps tribal forest-produce gatherers form value-addition and processing groups, improving income from products like bamboo, honey, and medicinal herbs, with training and market linkage support through TRIFED."
+  },
+  {
+    "id": "rural-16",
+    "domain": "rural_development",
+    "language": "en",
+    "question_en": "Where can farmers sell crops at better prices?",
+    "answer_en": "e-NAM (National Agriculture Market) is an online trading platform connecting farmers directly to buyers across mandis nationwide, helping farmers get competitive prices. Registration is done through your local Agricultural Produce Market Committee (APMC)."
+  },
+  {
+    "id": "rural-17",
+    "domain": "rural_development",
+    "language": "en",
+    "question_en": "Is there support for fish farming or fisheries in the Northeast?",
+    "answer_en": "Pradhan Mantri Matsya Sampada Yojana (PMMSY) provides subsidies for pond construction, fish seed, and fisheries infrastructure, relevant to NE states with strong inland fisheries potential. Contact your district Fisheries Department office for eligibility."
+  },
+  {
+    "id": "rural-18",
+    "domain": "rural_development",
+    "language": "en",
+    "question_en": "How do villages get electricity connections if they don't have one yet?",
+    "answer_en": "Saubhagya scheme aimed to provide free electricity connections to all remaining un-electrified rural households; most areas are now covered, but new household connections can still be requested through your state electricity board or Gram Panchayat."
+  },
+  {
+    "id": "health-17",
+    "domain": "healthcare",
+    "language": "en",
+    "question_en": "What should I do if I'm bitten by a dog or stray animal?",
+    "answer_en": "Wash the wound thoroughly with soap and water for at least 15 minutes, then go immediately to the nearest PHC or hospital for free anti-rabies vaccination (post-exposure prophylaxis) — do not wait for symptoms to appear."
+  },
+  {
+    "id": "health-18",
+    "domain": "healthcare",
+    "language": "en",
+    "question_en": "Is there a scheme for menstrual hygiene support for adolescent girls?",
+    "answer_en": "Rashtriya Kishor Swasthya Karyakram (RKSK) provides free or subsidized sanitary napkins to adolescent girls through Anganwadi centres and schools, along with menstrual health education."
+  },
+  {
+    "id": "health-19",
+    "domain": "healthcare",
+    "language": "en",
+    "question_en": "What healthcare support is available for elderly people?",
+    "answer_en": "The National Programme for Health Care of the Elderly (NPHCE) provides dedicated geriatric care services, including free checkups and medicines, at district hospitals and select PHCs for citizens above 60."
+  },
+  {
+    "id": "health-20",
+    "domain": "healthcare",
+    "language": "en",
+    "question_en": "How do I register as a blood donor or find a blood bank?",
+    "answer_en": "Register as a voluntary blood donor through the e-Rakt Kosh portal (eraktkosh.mohfw.gov.in), which also helps locate nearby blood banks and check blood availability in emergencies."
+  },
+  {
+    "id": "gov-19",
+    "domain": "governance",
+    "language": "en",
+    "question_en": "How do I add a new family member to my ration card?",
+    "answer_en": "Visit your local Public Distribution System (PDS) office or apply through your state's e-District/ration portal with the new member's birth certificate or marriage certificate and Aadhaar to update the ration card."
+  },
+  {
+    "id": "gov-20",
+    "domain": "governance",
+    "language": "en",
+    "question_en": "How do I register as an unorganized sector worker for government benefits?",
+    "answer_en": "Register on the e-Shram portal (eshram.gov.in) to get a Universal Account Number (UAN), which connects unorganized workers like daily wagers, domestic workers, and street vendors to social security schemes and insurance benefits."
+  },
+  {
+    "id": "gov-21",
+    "domain": "governance",
+    "language": "en",
+    "question_en": "How do I get an encumbrance certificate for property?",
+    "answer_en": "Apply at your local Sub-Registrar office or through your state's land records portal to get an encumbrance certificate, which shows any legal or financial liabilities on a property — commonly required for property transactions and loans."
+  },
+  {
+    "id": "edu-16",
+    "domain": "education",
+    "language": "en",
+    "question_en": "Is there a scheme to help young people learn a trade while earning?",
+    "answer_en": "The National Apprenticeship Promotion Scheme (NAPS) connects youth with paid on-the-job training (apprenticeships) at companies, combining practical skill-building with a monthly stipend. Register through the Apprenticeship India portal."
+  },
+  {
+    "id": "edu-17",
+    "domain": "education",
+    "language": "en",
+    "question_en": "Do any schemes provide free bicycles for students, especially girls?",
+    "answer_en": "Several state governments run free bicycle distribution schemes for secondary school students, especially girls, to reduce dropout rates caused by long commutes to school. Check with your school or state education department for the scheme active in your state."
+  },
+  {
+    "id": "edu-18",
+    "domain": "education",
+    "language": "en",
+    "question_en": "How can children with disabilities access inclusive education?",
+    "answer_en": "Samagra Shiksha's inclusive education component provides resource teachers, assistive devices, and accessible learning materials for children with disabilities in regular government schools, aiming to support them alongside other students."
+  },
+  {
+    "id": "rural-19",
+    "domain": "rural_development",
+    "language": "en",
+    "question_en": "Is there rural youth skill training that also helps find a job?",
+    "answer_en": "Deendayal Upadhyaya Grameen Kaushalya Yojana (DDU-GKY) provides free skill training for rural youth (ages 15-35) with guaranteed placement assistance afterward, focused on sectors like retail, hospitality, and IT-enabled services."
+  },
+  {
+    "id": "rural-20",
+    "domain": "rural_development",
+    "language": "en",
+    "question_en": "Is there support for repairing an old rural house, not just building a new one?",
+    "answer_en": "Some state PMAY-Gramin implementations and state-specific rural housing schemes provide funds for repair and renovation of existing kutcha or damaged houses, not only new construction. Check with your Gram Panchayat for current eligibility."
+  },
+  {
+    "id": "rural-21",
+    "domain": "rural_development",
+    "language": "en",
+    "question_en": "What is a watershed development program and how does it help farmers?",
+    "answer_en": "Watershed development programs fund soil and water conservation structures — like check dams and contour bunds — to improve groundwater recharge and reduce soil erosion, helping farmers get more reliable irrigation. Proposals are typically raised through the Gram Panchayat and state Rural Development Department."
+  },
+  {
+    "id": "flood-1",
+    "domain": "disaster_response",
+    "language": "en",
+    "question_en": "What should I do during a flood emergency?",
+    "answer_en": "Move to higher ground immediately, avoid walking or driving through flood water, and keep a battery radio for updates. If trapped, call the National Emergency Number 112 or ASDMA's helpline 1070 for rescue. Do not return home until authorities confirm it's safe."
+  },
+  {
+    "id": "flood-2",
+    "domain": "disaster_response",
+    "language": "en",
+    "question_en": "How do I contact NDRF for flood rescue?",
+    "answer_en": "Call the NDRF Helpline at +91-9711077372, or the National Emergency Number 112, which coordinates with NDRF, SDRF, and local administration for rescue operations in your area."
+  },
+  {
+    "id": "flood-3",
+    "domain": "disaster_response",
+    "language": "en",
+    "question_en": "What is the ASDMA helpline number?",
+    "answer_en": "Assam State Disaster Management Authority (ASDMA) can be reached at 1070 for flood updates, rescue coordination, and relief information specific to Assam."
+  },
+  {
+    "id": "flood-4",
+    "domain": "disaster_response",
+    "language": "en",
+    "question_en": "Is there a national disaster helpline?",
+    "answer_en": "Yes, the National Disaster Management Helpline is 1078, which connects you to central government disaster response coordination alongside your state's own helpline."
+  },
+  {
+    "id": "flood-5",
+    "domain": "disaster_response",
+    "language": "en",
+    "question_en": "Where can I find the nearest flood relief camp?",
+    "answer_en": "Visit your nearest relief camp or district administration office — these are typically set up in schools, community halls, or government buildings during flood emergencies. Contact ASDMA (1070) or local administration to locate the nearest one."
+  },
+  {
+    "id": "flood-6",
+    "domain": "disaster_response",
+    "language": "en",
+    "question_en": "How do I apply for flood damage compensation?",
+    "answer_en": "Report damage to your local circle officer or district administration, who will assess losses to houses, crops, or livestock. The Assam government typically announces relief fund support for affected families — visit your district office or nearest relief camp to register your claim."
+  },
+  {
+    "id": "flood-7",
+    "domain": "disaster_response",
+    "language": "en",
+    "question_en": "How do I report someone missing during a flood?",
+    "answer_en": "Report immediately to the nearest police station, ASDMA helpline (1070), or NDRF Helpline (+91-9711077372). Provide the person's last known location and any identifying details to help rescue teams."
+  },
+  {
+    "id": "flood-8",
+    "domain": "disaster_response",
+    "language": "en",
+    "question_en": "What health risks come after a flood and how do I protect my family?",
+    "answer_en": "Flood water often carries waterborne diseases like diarrhea, cholera, and skin infections. Drink only boiled or purified water, avoid wading in floodwater with open wounds, and visit the nearest medical camp or PHC if anyone shows symptoms of fever or infection."
+  },
+  {
+    "id": "flood-9",
+    "domain": "disaster_response",
+    "language": "en",
+    "question_en": "How do I request a boat rescue if my village is cut off?",
+    "answer_en": "Call the NDRF Helpline (+91-9711077372) or National Emergency Number (112) and clearly state your village name, district, and number of people needing rescue. NDRF, SDRF, and local administration coordinate boat rescue operations in cut-off areas."
+  },
+  {
+    "id": "flood-10",
+    "domain": "disaster_response",
+    "language": "en",
+    "question_en": "How can I get advance flood warnings?",
+    "answer_en": "The Central Water Commission (CWC) issues flood forecasts and river water level bulletins, and ASDMA shares district-level alerts. Follow official ASDMA updates and local administration announcements for advance warning in your area."
+  },
+  {
+    "id": "flood-11",
+    "domain": "disaster_response",
+    "language": "en",
+    "question_en": "What should I keep ready in case of flood evacuation?",
+    "answer_en": "Keep essential documents (Aadhaar, land papers) in a waterproof bag, along with drinking water, dry food, medicines, a torch, and a mobile phone with power bank. Know your nearest relief camp location in advance."
+  },
+  {
+    "id": "flood-12",
+    "domain": "disaster_response",
+    "language": "en",
+    "question_en": "Who do I contact if an embankment or dam is breached near my village?",
+    "answer_en": "Immediately alert your local Gram Panchayat and Water Resources Department, and call ASDMA (1070) or the National Emergency Number (112) to report the breach so evacuation and repair teams can respond quickly."
+  }
+]

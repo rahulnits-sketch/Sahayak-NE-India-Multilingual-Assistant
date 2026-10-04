@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sahayak — NE India Multilingual Assistant</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.24.7/babel.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;600&display=swap');
+
+  :root {
+    --pine: #1F3A34;
+    --pine-deep: #16281F;
+    --mist: #E8EDE9;
+    --paper: #FAF8F3;
+    --marigold: #E8A33D;
+    --river: #4C7A8C;
+    --text: #1A2420;
+    --text-soft: #4A5750;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--text);
+    font-family: 'Manrope', sans-serif;
+  }
+  .display {
+    font-family: 'Fraunces', serif;
+  }
+
+  ::selection { background: var(--marigold); color: var(--pine-deep); }
+
+  html, body {
+    height: 100%;
+    overflow: hidden; /* prevents the whole page from scrolling — only .chat should scroll */
+  }
+
+  .app {
+    height: 100vh;
+    height: 100dvh; /* dvh accounts for mobile browser address bars better than vh */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  header.top {
+    background: var(--pine);
+    color: var(--paper);
+    padding: 28px 24px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  header.top::after {
+    content: "";
+    position: absolute;
+    right: -40px; top: -40px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,163,61,0.18), transparent 70%);
+  }
+  .eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--marigold);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  h1.title {
+    font-size: 30px;
+    margin: 0 0 4px;
+    font-weight: 600;
+  }
+  .subtitle {
+    font-size: 14px;
+    color: #C9D6CD;
+    max-width: 480px;
+  }
+
+  .header-top-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 100px;
+    background: rgba(255,255,255,0.08);
+    color: #C9D6CD;
+    position: relative;
+  }
+  .status-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #888;
+  }
+  .status-badge.online .status-dot { background: #4CAF6D; }
+  .status-badge.offline .status-dot { background: #E05B4C; }
+  .status-badge.checking .status-dot { background: var(--marigold); }
+
+  .controls {
+    display: flex;
+    gap: 8px;
+    padding: 16px 20px;
+    background: var(--mist);
+    flex-wrap: wrap;
+    border-bottom: 1px solid #d7ddd8;
+  }
+  .pill {
+    border: 1px solid #c7d0c9;
+    background: var(--paper);
+    color: var(--text-soft);
+    padding: 7px 14px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .pill:hover { border-color: var(--river); }
+  .pill:active { transform: scale(0.96); }
+  .pill.active {
+    background: var(--pine);
+    border-color: var(--pine);
+    color: var(--paper);
+  }
+  .pill.domain.active {
+    background: var(--marigold);
+    border-color: var(--marigold);
+    color: var(--pine-deep);
+  }
+
+  .chat {
+    flex: 1;
+    min-height: 0; /* without this, flex children can't shrink below content size, breaking the scroll */
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .empty {
+    margin: auto;
+    text-align: center;
+    color: var(--text-soft);
+    max-width: 320px;
+  }
+  .empty .glyph {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    color: var(--river);
+  }
+
+  @keyframes messageIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .msg {
+    max-width: 78%;
+    padding: 12px 16px;
+    border-radius: 14px;
+    font-size: 14.5px;
+    line-height: 1.5;
+    animation: messageIn 0.25s ease;
+  }
+  .msg.user {
+    align-self: flex-end;
+    background: var(--pine);
+    color: var(--paper);
+    border-bottom-right-radius: 4px;
+  }
+  .msg.bot {
+    align-self: flex-start;
+    background: white;
+    border: 1px solid #e3e5e0;
+    border-bottom-left-radius: 4px;
+    box-shadow: 0 1px 3px rgba(31, 58, 52, 0.06);
+  }
+  .msg.bot .native {
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .msg.bot .en {
+    color: var(--text-soft);
+    font-size: 13px;
+    border-top: 1px dashed #e3e5e0;
+    padding-top: 6px;
+    margin-top: 6px;
+  }
+  .tag-row {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .tag {
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 100px;
+    background: var(--mist);
+    color: var(--river);
+  }
+  .action-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+  .speak-btn {
+    border: none;
+    background: none;
+    color: var(--river);
+    cursor: pointer;
+    font-size: 13px;
+    padding: 0;
+    font-weight: 600;
+  }
+
+  .trace-card {
+    background: var(--pine-deep);
+    color: #C9D6CD;
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-top: 10px;
+    font-size: 12px;
+    font-family: 'Manrope', monospace;
+  }
+  .trace-title {
+    font-weight: 700;
+    color: var(--paper);
+    margin-bottom: 8px;
+  }
+  .trace-row {
+    margin-bottom: 4px;
+    line-height: 1.5;
+  }
+  .trace-dim {
+    color: #8AA090;
+  }
+  .trace-candidate {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 3px 0;
+    color: #8AA090;
+  }
+  .trace-used {
+    color: var(--marigold);
+    font-weight: 600;
+  }
+  .trace-score {
+    flex-shrink: 0;
+    font-weight: 700;
+    color: var(--paper);
+  }
+
+  .checklist-card {
+    background: var(--mist);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-top: 10px;
+    font-size: 13px;
+  }
+  .checklist-title {
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: var(--pine);
+  }
+  .checklist-card ul {
+    margin: 0;
+    padding-left: 18px;
+  }
+  .checklist-card li {
+    margin-bottom: 3px;
+  }
+
+  .feedback-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--text-soft);
+  }
+  .feedback-btn {
+    border: 1px solid #d7ddd8;
+    background: white;
+    border-radius: 6px;
+    padding: 2px 8px;
+    cursor: pointer;
+    font-size: 13px;
+  }
+  .feedback-btn:disabled { cursor: default; opacity: 0.5; }
+  .feedback-btn.active { border-color: var(--river); background: var(--mist); opacity: 1; }
+  .feedback-thanks { color: var(--river); font-weight: 600; }
+
+  .state-select {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #d7ddd8;
+    font-size: 13px;
+    font-family: inherit;
+    background: white;
+    color: var(--text);
+  }
+
+  .emergency-btn {
+    background: #c0392b;
+    color: white;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .emergency-btn:hover { background: #a5301f; }
+
+  .emergency-contact-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    border-radius: 10px;
+    background: var(--mist);
+    margin-bottom: 8px;
+    text-decoration: none;
+    color: var(--text);
+  }
+  .emergency-contact-row:hover { background: #dde5df; }
+  .emergency-contact-label {
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .emergency-contact-note {
+    font-size: 11.5px;
+    color: var(--text-soft);
+  }
+  .emergency-contact-number {
+    font-weight: 700;
+    color: #c0392b;
+    font-size: 13px;
+  }
+
+  .dashboard-btn {
+    background: rgba(255,255,255,0.1);
+    color: var(--paper);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 5px 12px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .dashboard-btn:hover { background: rgba(255,255,255,0.18); }
+
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(18, 35, 29, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    padding: 20px;
+  }
+  .modal-card {
+    background: var(--paper);
+    border-radius: 16px;
+    max-width: 460px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 22px;
+  }
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+  .modal-close {
+    border: none;
+    background: var(--mist);
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    color: var(--text-soft);
+  }
+  .stat-big {
+    text-align: center;
+    padding: 16px;
+    background: var(--pine);
+    border-radius: 12px;
+    margin-bottom: 18px;
+  }
+  .stat-big-number {
+    font-family: 'Fraunces', serif;
+    font-size: 40px;
+    color: var(--marigold);
+    font-weight: 600;
+  }
+  .stat-big-label {
+    color: #C9D6CD;
+    font-size: 12px;
+    margin-top: 2px;
+  }
+  .stat-section-title {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 700;
+    color: var(--text-soft);
+    margin: 16px 0 8px;
+  }
+  .stat-empty {
+    font-size: 13px;
+    color: var(--text-soft);
+    font-style: italic;
+  }
+  .stat-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+    font-size: 12.5px;
+  }
+  .stat-bar-label {
+    width: 90px;
+    flex-shrink: 0;
+    color: var(--text);
+    text-transform: capitalize;
+  }
+  .stat-bar-track {
+    flex: 1;
+    height: 8px;
+    background: var(--mist);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+  .stat-bar-fill {
+    height: 100%;
+    background: var(--pine);
+    border-radius: 100px;
+  }
+  .stat-bar-count {
+    width: 24px;
+    text-align: right;
+    font-weight: 700;
+    color: var(--text-soft);
+  }
+  .stat-mini-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .stat-mini {
+    background: var(--mist);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 11.5px;
+    color: var(--text-soft);
+  }
+  .stat-mini-number {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--pine);
+    margin-bottom: 2px;
+  }
+
+  .voice-mode-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    background: var(--pine-deep);
+    color: var(--paper);
+  }
+  .voice-mode-orb {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--river);
+    flex-shrink: 0;
+  }
+  .voice-mode-orb.listening {
+    background: var(--marigold);
+    animation: orbPulse 1s infinite ease-in-out;
+  }
+  .voice-mode-orb.speaking {
+    background: #4CAF6D;
+    animation: orbPulse 0.6s infinite ease-in-out;
+  }
+  @keyframes orbPulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.3); opacity: 0.7; }
+  }
+  .voice-mode-bar span {
+    flex: 1;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .voice-mode-stop {
+    background: rgba(255,255,255,0.12);
+    color: var(--paper);
+    border: none;
+    padding: 5px 12px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .icon-btn.voice-mode-toggle {
+    background: var(--mist);
+    color: var(--marigold);
+  }
+
+  .composer {
+    display: flex;
+    gap: 8px;
+    padding: 14px 16px calc(14px + env(safe-area-inset-bottom));
+    background: white;
+    border-top: 1px solid #e3e5e0;
+  }
+  .composer input {
+    flex: 1;
+    border: 1px solid #d7ddd8;
+    border-radius: 100px;
+    padding: 11px 16px;
+    font-size: 14.5px;
+    font-family: inherit;
+    outline: none;
+  }
+  .composer input:focus { border-color: var(--river); }
+  .icon-btn {
+    border: none;
+    border-radius: 50%;
+    width: 42px; height: 42px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 17px;
+    flex-shrink: 0;
+    transition: transform 0.12s ease, filter 0.12s ease;
+  }
+  .icon-btn:hover:not(:disabled) { filter: brightness(1.08); }
+  .icon-btn:active:not(:disabled) { transform: scale(0.93); }
+  .icon-btn.mic {
+    background: var(--mist);
+    color: var(--pine);
+  }
+  .icon-btn.mic.recording {
+    background: #c0392b;
+    color: white;
+    animation: pulse 1.2s infinite;
+  }
+  .icon-btn.camera {
+    background: var(--mist);
+    color: var(--river);
+  }
+  .icon-btn.send {
+    background: var(--pine);
+    color: var(--paper);
+  }
+  .icon-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .msg-image {
+    display: block;
+    max-width: 100%;
+    border-radius: 10px;
+    margin-bottom: 6px;
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(192,57,43,0.4); }
+    50% { box-shadow: 0 0 0 8px rgba(192,57,43,0); }
+  }
+
+  .loading {
+    align-self: flex-start;
+    color: var(--text-soft);
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--river);
+    animation: bounce 1s infinite;
+  }
+  .dot:nth-child(2) { animation-delay: 0.15s; }
+  .dot:nth-child(3) { animation-delay: 0.3s; }
+  @keyframes bounce {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+    30% { transform: translateY(-4px); opacity: 1; }
+  }
+
+  .banner {
+    font-size: 12px;
+    text-align: center;
+    padding: 6px;
+    background: #fff4e0;
+    color: #8a5a12;
+  }
+
+  .domain-lock-notice {
+    background: #fff4e0;
+    color: #8a5a12;
+    font-size: 12.5px;
+    padding: 8px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #f0dfc0;
+  }
+  .domain-lock-notice button {
+    background: #8a5a12;
+    color: white;
+    border: none;
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .edge-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    background: var(--pine-deep);
+    color: #C9D6CD;
+  }
+  .switch {
+    position: relative;
+    width: 38px; height: 21px;
+    flex-shrink: 0;
+  }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .slider {
+    position: absolute; cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: #445048;
+    border-radius: 100px;
+    transition: 0.2s;
+  }
+  .slider::before {
+    content: "";
+    position: absolute;
+    height: 15px; width: 15px;
+    left: 3px; bottom: 3px;
+    background: white;
+    border-radius: 50%;
+    transition: 0.2s;
+  }
+  .switch input:checked + .slider { background: var(--marigold); }
+  .switch input:checked + .slider::before { transform: translateX(17px); }
+  .edge-label {
+    font-size: 12.5px;
+    font-weight: 600;
+  }
+  .edge-desc {
+    font-size: 11px;
+    color: #8AA090;
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" data-presets="react">
+const { useState, useRef, useEffect } = React;
+
+const LANGUAGES = [
+  { code: "en", label: "English", speechCode: "en-IN" },
+  { code: "as", label: "অসমীয়া", speechCode: "as-IN" },
+  { code: "ne", label: "नेपाली", speechCode: "ne-NP" },
+  { code: "bo", label: "बर'/Bodo", speechCode: "hi-IN", lowResource: true },
+];
+
+// Small embedded copy of the backend dataset, used ONLY in Edge/Offline Mode.
+// This simulates on-device inference (the kind an NPU-class chipset would run)
+// for rural areas with poor/no connectivity — no network call is made at all
+// when this mode is active. In a real deployment this would be a quantized
+// local model; here it's a lightweight in-browser matcher to demonstrate the
+// concept honestly within a hackathon timeline.
+const EDGE_DATASET = [
+  { domain: "healthcare", language: "en", q: "fever symptoms what to do", a: "Visit your nearest Primary Health Centre (PHC). If fever persists more than 3 days, seek medical attention." },
+  { domain: "healthcare", language: "as", q: "জ্বৰৰ লক্ষণ কি কৰিব লাগে", a: "আপোনাৰ নিকটতম প্ৰাথমিক স্বাস্থ্য কেন্দ্ৰ (PHC) লৈ যাওক। যদি জ্বৰ ৩ দিনতকৈ অধিক সময় থাকে, তৎক্ষণাৎ চিকিৎসা লওক।" },
+  { domain: "healthcare", language: "ne", q: "ज्वरो लक्षण के गर्ने", a: "नजिकको प्राथमिक स्वास्थ्य केन्द्र (PHC) मा जानुहोस्। यदि ज्वरो ३ दिनभन्दा बढी रह्यो भने तुरुन्तै उपचार गराउनुहोस्।" },
+  { domain: "healthcare", language: "bo", q: "जोबथार हेल्थ सेन्टार बारि दं", a: "नोंथाङनि जोबथार Primary Health Centre (PHC) खउ नाय। ASHA कर्मीफोरा मदद खालामनो हागौ।" },
+  { domain: "governance", language: "en", q: "apply caste certificate residence", a: "Apply online via the e-District portal, or visit your local Circle Officer's office with required documents." },
+  { domain: "governance", language: "as", q: "জাতি প্ৰমাণ পত্ৰৰ বাবে আবেদন", a: "অসম চৰকাৰৰ ই-জিলা পৰ্টেলৰ জৰিয়তে অনলাইনত আবেদন কৰক, বা স্থানীয় চাৰ্কল অফিচাৰৰ কাৰ্যালয়লৈ যাওক।" },
+  { domain: "governance", language: "ne", q: "जात प्रमाणपत्र आवेदन कसरी", a: "e-District पोर्टल मार्फत अनलाइन आवेदन दिनुहोस्, वा आवश्यक कागजातसहित नजिकको Circle Officer कार्यालयमा जानुहोस्।" },
+  { domain: "governance", language: "bo", q: "बासिन्दा प्रमाणपत्रनि थाखाय आवेदन", a: "बासिन्दा आरो पहिचाननि दलिलजों Circle Officer एबा Block office-आव थांगोन।" },
+  { domain: "education", language: "en", q: "scholarship eligibility apply", a: "Students from economically weaker sections with minimum academic marks are eligible. Apply at scholarships.gov.in." },
+  { domain: "education", language: "as", q: "বৃত্তিৰ যোগ্যতা আবেদন", a: "নির্দিষ্ট আয়ৰ সীমাৰ তলত থকা পৰিয়ালৰ শিক্ষাৰ্থী যোগ্য। scholarships.gov.in ত আবেদন কৰক।" },
+  { domain: "education", language: "ne", q: "छात्रवृत्ति योग्यता आवेदन", a: "आर्थिक रूपमा कमजोर परिवारका विद्यार्थीहरू योग्य छन्। scholarships.gov.in मा आवेदन दिनुहोस्।" },
+  { domain: "education", language: "bo", q: "बर'मादि पिपिलफोरनि स्कलारसिप", a: "Bodoland Territorial Region आरो राज्यनि शिक्षा विभागआ स्कलारसिप होदों — स्कुलजों सोदोब।" },
+  { domain: "rural_development", language: "en", q: "mgnrega job card apply", a: "Apply at your Gram Panchayat office with proof of residence." },
+  { domain: "rural_development", language: "as", q: "মগনৰেগা জব কাৰ্ড আবেদন", a: "নিবাসৰ প্ৰমাণসহ আপোনাৰ গাঁও পঞ্চায়ত কাৰ্যালয়ত আবেদন কৰক।" },
+  { domain: "rural_development", language: "ne", q: "मनरेगा जब कार्ड आवेदन", a: "निवास प्रमाणसहित आफ्नो ग्राम पञ्चायत कार्यालयमा आवेदन दिनुहोस्।" },
+  { domain: "rural_development", language: "bo", q: "MGNREGA जब कार्ड मोनथिनो", a: "Gram Panchayat दफ्तारआव आवेदन खालामगोन। बयस्क सोदोबफोरा जब कार्ड मोनो हागौ।" },
+];
+
+function edgeMatch(query, domain, language) {
+  const norm = (s) => s.toLowerCase().replace(/\s+/g, "");
+  const qn = norm(query);
+  let best = null, bestScore = 0;
+  for (const entry of EDGE_DATASET) {
+    if (domain && entry.domain !== domain) continue;
+    if (entry.language !== language) continue;
+    const en = norm(entry.q);
+    let overlap = 0;
+    for (let i = 0; i < qn.length - 1; i++) {
+      if (en.includes(qn.slice(i, i + 2))) overlap++;
+    }
+    if (overlap > bestScore) { bestScore = overlap; best = entry; }
+  }
+  return bestScore >= 2 ? best : null;
+}
+
+const DOMAINS = [
+  { code: null, label: "Auto-detect" },
+  { code: "healthcare", label: "Healthcare" },
+  { code: "governance", label: "Governance" },
+  { code: "education", label: "Education" },
+  { code: "rural_development", label: "Rural Dev" },
+  { code: "disaster_response", label: "Flood/Disaster" },
+];
+
+// Maps each domain to the type of government office relevant to it, for the
+// "Find nearest office" button. Kept as a plain-language search term rather
+// than a fixed address list — this scales to any location in India without
+// needing a maintained office database.
+const OFFICE_SEARCH_TERM = {
+  healthcare: "Primary Health Centre",
+  governance: "Circle Officer office OR Common Service Centre",
+  education: "District Education Office",
+  rural_development: "Gram Panchayat office",
+  disaster_response: "NDRF SDRF Disaster Management office OR flood relief camp",
+};
+
+// Verified real emergency numbers. 112 works identically across ALL of
+// India — always safe to show regardless of state. Assam's ASDMA numbers
+// were independently cross-checked against asdma.assam.gov.in (official)
+// and a recent news report — safe to show as direct dial numbers.
+//
+// For the other 6 NE states, we deliberately do NOT show a phone number
+// unless it's been independently confirmed on that state's own .gov.in
+// site — a wrong emergency number is genuinely dangerous, worse than
+// showing no number at all. Instead we link to each state's official
+// disaster management website, which the person can check directly. Numbers
+// found only on non-official aggregator sites were rejected for this reason
+// during development — see PROJECT_NOTES in this file's git history if
+// verifying further.
+const EMERGENCY_CONTACTS = [
+  { label: "National Emergency (all India)", number: "112", note: "Police / Fire / Medical / Disaster — works in every state" },
+  { label: "NDRF Helpline", number: "+919711077372", note: "National Disaster Response Force" },
+];
+
+const STATE_DISASTER_INFO = {
+  assam: {
+    name: "Assam",
+    verifiedNumbers: [
+      { label: "ASDMA State Control Room", number: "1070", note: "Verified — asdma.assam.gov.in" },
+      { label: "District Control Room", number: "1077", note: "Verified — asdma.assam.gov.in" },
+    ],
+    website: "https://asdma.assam.gov.in"
+  },
+  meghalaya: { name: "Meghalaya", verifiedNumbers: [], website: "https://msdma.gov.in" },
+  manipur: { name: "Manipur", verifiedNumbers: [], website: "https://manipursdma.com" },
+  mizoram: { name: "Mizoram", verifiedNumbers: [], website: "https://dmr.mizoram.gov.in" },
+  nagaland: { name: "Nagaland", verifiedNumbers: [], website: "https://nsdma.nagaland.gov.in" },
+  tripura: { name: "Tripura", verifiedNumbers: [], website: "https://tdma.tripura.gov.in" },
+  arunachal: { name: "Arunachal Pradesh", verifiedNumbers: [], website: "https://sdma-arunachal.in" },
+  sikkim: { name: "Sikkim", verifiedNumbers: [], website: "https://ssdma.nic.in" },
+};
+
+function openNearestOffice(domain) {
+  const searchTerm = OFFICE_SEARCH_TERM[domain] || "government office";
+  const openMaps = (query) => {
+    const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+    window.open(url, "_blank");
+  };
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const { latitude, longitude } = pos.coords;
+        openMaps(`${searchTerm} near ${latitude},${longitude}`);
+      },
+      () => {
+        // Permission denied or unavailable — fall back to a plain "near me"
+        // search; Google Maps will use its own location prompt if opened
+        // on a device with location services.
+        openMaps(`${searchTerm} near me`);
+      },
+      { timeout: 5000 }
+    );
+  } else {
+    openMaps(`${searchTerm} near me`);
+  }
+}
+
+// Point this at your running backend (see backend/README.md)
+const API_URL = "http://localhost:5007/api/chat";
+const BASE_URL = "http://localhost:5007";
+
+function App() {
+  const [language, setLanguage] = useState("en");
+  const [domain, setDomain] = useState(null);
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [recording, setRecording] = useState(false);
+  const [apiError, setApiError] = useState(false);
+  const [edgeMode, setEdgeMode] = useState(false);
+  const [backendStatus, setBackendStatus] = useState("checking"); // checking | online | offline
+  const [dashboardOpen, setDashboardOpen] = useState(false);
+  const [emergencyOpen, setEmergencyOpen] = useState(false);
+  const [selectedState, setSelectedState] = useState("");
+  const [stats, setStats] = useState(null);
+  const [statsLoading, setStatsLoading] = useState(false);
+
+  async function openDashboard() {
+    setDashboardOpen(true);
+    setStatsLoading(true);
+    try {
+      const res = await fetch(`${BASE_URL}/api/stats`);
+      const data = await res.json();
+      setStats(data);
+    } catch (err) {
+      setStats(null);
+    } finally {
+      setStatsLoading(false);
+    }
+  }
+  const chatRef = useRef(null);
+  const recognitionRef = useRef(null);
+  const fileInputRef = useRef(null);
+  const autoStopTimerRef = useRef(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    function checkHealth() {
+      fetch(API_URL.replace("/api/chat", "/"))
+        .then((res) => { if (!cancelled) setBackendStatus(res.ok ? "online" : "offline"); })
+        .catch(() => { if (!cancelled) setBackendStatus("offline"); });
+    }
+    checkHealth();
+    const interval = setInterval(checkHealth, 15000);
+    return () => { cancelled = true; clearInterval(interval); };
+  }, []);
+
+  useEffect(() => {
+    if (chatRef.current) {
+      chatRef.current.scrollTop = chatRef.current.scrollHeight;
+    }
+  }, [messages, loading]);
+
+  async function generateChecklist(index, text, lang) {
+    setMessages((m) => m.map((msg, i) => i === index ? { ...msg, checklistLoading: true } : msg));
+    try {
+      const res = await fetch(`${BASE_URL}/api/checklist`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text, language: lang }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Checklist failed");
+      setMessages((m) => m.map((msg, i) => i === index ? { ...msg, checklist: data.items, checklistLoading: false } : msg));
+    } catch (err) {
+      setMessages((m) => m.map((msg, i) => i === index ? { ...msg, checklistLoading: false } : msg));
+      alert("Couldn't generate checklist: " + err.message);
+    }
+  }
+
+  async function sendFeedback(index, rating, domain, lang) {
+    setMessages((m) => m.map((msg, i) => i === index ? { ...msg, feedbackGiven: rating } : msg));
+    try {
+      await fetch(`${BASE_URL}/api/feedback`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ domain, language: lang, rating }),
+      });
+    } catch (err) {
+      // Feedback is non-critical — fail silently, don't interrupt the user
+      console.error("Feedback submission failed:", err);
+    }
+  }
+
+  async function handleImageSelect(e) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    e.target.value = ""; // allow re-selecting the same file later
+
+    const previewUrl = URL.createObjectURL(file);
+    setMessages((m) => [...m, { role: "user", text: "📷 Photo uploaded", imagePreview: previewUrl }]);
+    setLoading(true);
+
+    try {
+      const base64 = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result.split(",")[1]);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+
+      const res = await fetch(`${BASE_URL}/api/analyze-image`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ image: base64, mimeType: file.type, language }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Image analysis failed");
+
+      setMessages((m) => [
+        ...m,
+        { role: "bot", native: data.answer, en: "", domain: "", lang: language, isImageAnalysis: true },
+      ]);
+    } catch (err) {
+      setMessages((m) => [
+        ...m,
+        { role: "bot", native: "Couldn't analyze the photo: " + err.message, en: "", domain: "", lang: language },
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function continueVoiceModeIfActive(nativeText) {
+    if (!voiceModeRef.current || !nativeText) return;
+    speak(nativeText, language, () => {
+      if (voiceModeRef.current) startListening();
+    });
+  }
+
+  async function sendMessage(text) {
+    if (!text.trim()) return;
+    const userMsg = { role: "user", text };
+    setMessages((m) => [...m, userMsg]);
+    setInput("");
+    setLoading(true);
+    setApiError(false);
+
+    // Edge/Offline Mode: no network call at all — matches entirely in-browser
+    // against the small embedded dataset. Simulates on-device NPU inference
+    // for connectivity-poor rural areas.
+    if (edgeMode) {
+      await new Promise((r) => setTimeout(r, 300)); // brief delay to feel like real inference
+      const match = edgeMatch(text, domain, language === "en" ? "en" : language);
+      const replyText = match ? match.a : (language === "bo" ? "बां जाबाय, गोदान थि गोसो।" : "No offline match found for this — try switching off Edge Mode for full AI answers.");
+      setMessages((m) => [
+        ...m,
+        match
+          ? { role: "bot", native: match.a, en: "", domain: match.domain, lang: language, edge: true }
+          : {
+              role: "bot",
+              native: replyText,
+              en: "",
+              domain: "",
+              lang: language,
+              edge: true,
+            },
+      ]);
+      setLoading(false);
+      continueVoiceModeIfActive(replyText);
+      return;
+    }
+
+    try {
+      // Send the last 3 exchanges as conversation history — gives the
+      // backend enough context for follow-up questions ("what documents do
+      // I need?" after asking about a scheme) without bloating every request.
+      const recentHistory = messages
+        .slice(-6)
+        .filter((m) => m.role === "user" || m.native)
+        .map((m) => ({ role: m.role, text: m.role === "user" ? m.text : m.native }));
+
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: text, language, domain, history: recentHistory }),
+      });
+      if (!res.ok) throw new Error("API error");
+      const data = await res.json();
+      setMessages((m) => [
+        ...m,
+        {
+          role: "bot",
+          native: data.answer_native,
+          en: data.answer_en,
+          domain: data.domain,
+          domainConfidence: data.domain_confidence,
+          source: data.answer_source,
+          similarityScore: data.similarity_score,
+          trace: data.trace,
+          lang: language,
+        },
+      ]);
+      continueVoiceModeIfActive(data.answer_native);
+    } catch (err) {
+      // Backend itself is unreachable (not just an internal Gemini failure —
+      // that case returns a normal JSON response from the backend and never
+      // reaches this catch block). This is the real "no connectivity"
+      // scenario — so instead of just showing an error, we automatically
+      // fall back to on-device Edge Mode matching, same as the manual
+      // toggle. This is exactly the graceful-degradation behavior PS02 asks
+      // for in low-connectivity NE areas.
+      setApiError(true);
+      await new Promise((r) => setTimeout(r, 200));
+      const match = edgeMatch(text, domain, language === "en" ? "en" : language);
+      setMessages((m) => [
+        ...m,
+        {
+          role: "bot",
+          native: match
+            ? match.a
+            : "No connection to the server, and no offline match found for this question either.",
+          en: "",
+          domain: match ? match.domain : "",
+          lang: language,
+          edge: true,
+          autoFallback: true,
+        },
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  // --- WAV recording helpers (Bhashini expects raw WAV/PCM audio) ---
+  // Web Speech API doesn't support Assamese/Nepali/Bodo at all, so for
+  // non-English we record raw audio ourselves and send it to our backend,
+  // which forwards it to Bhashini (Government of India's language platform —
+  // the only free option that actually supports these languages).
+  const audioCtxRef = useRef(null);
+  const processorRef = useRef(null);
+  const audioChunksRef = useRef([]);
+  const streamRef = useRef(null);
+
+  function floatTo16BitPCM(float32Array) {
+    const buffer = new ArrayBuffer(float32Array.length * 2);
+    const view = new DataView(buffer);
+    let offset = 0;
+    for (let i = 0; i < float32Array.length; i++, offset += 2) {
+      const s = Math.max(-1, Math.min(1, float32Array[i]));
+      view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7fff, true);
+    }
+    return buffer;
+  }
+
+  function encodeWav(samples, sampleRate) {
+    const buffer = new ArrayBuffer(44 + samples.byteLength);
+    const view = new DataView(buffer);
+    const writeString = (offset, str) => { for (let i = 0; i < str.length; i++) view.setUint8(offset + i, str.charCodeAt(i)); };
+    writeString(0, "RIFF");
+    view.setUint32(4, 36 + samples.byteLength, true);
+    writeString(8, "WAVE");
+    writeString(12, "fmt ");
+    view.setUint32(16, 16, true);
+    view.setUint16(20, 1, true);
+    view.setUint16(22, 1, true);
+    view.setUint32(24, sampleRate, true);
+    view.setUint32(28, sampleRate * 2, true);
+    view.setUint16(32, 2, true);
+    view.setUint16(34, 16, true);
+    writeString(36, "data");
+    view.setUint32(40, samples.byteLength, true);
+    new Uint8Array(buffer, 44).set(new Uint8Array(samples));
+    return buffer;
+  }
+
+  function arrayBufferToBase64(buffer) {
+    let binary = "";
+    const bytes = new Uint8Array(buffer);
+    for (let i = 0; i < bytes.byteLength; i++) binary += String.fromCharCode(bytes[i]);
+    return btoa(binary);
+  }
+
+  async function startWavRecording() {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    streamRef.current = stream;
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    audioCtxRef.current = audioCtx;
+    const source = audioCtx.createMediaStreamSource(stream);
+    const processor = audioCtx.createScriptProcessor(4096, 1, 1);
+    processorRef.current = processor;
+    audioChunksRef.current = [];
+    processor.onaudioprocess = (e) => {
+      audioChunksRef.current.push(new Float32Array(e.inputBuffer.getChannelData(0)));
+    };
+    source.connect(processor);
+    processor.connect(audioCtx.destination);
+  }
+
+  function stopWavRecording() {
+    return new Promise((resolve) => {
+      const audioCtx = audioCtxRef.current;
+      if (!audioCtx) return resolve(null);
+      processorRef.current.disconnect();
+      streamRef.current.getTracks().forEach((t) => t.stop());
+      const sampleRate = audioCtx.sampleRate;
+      const total = audioChunksRef.current.reduce((a, c) => a + c.length, 0);
+      const merged = new Float32Array(total);
+      let offset = 0;
+      audioChunksRef.current.forEach((c) => { merged.set(c, offset); offset += c.length; });
+      const pcm = floatTo16BitPCM(merged);
+      const wavBuffer = encodeWav(pcm, sampleRate);
+      audioCtx.close();
+      resolve(arrayBufferToBase64(wavBuffer));
+    });
+  }
+
+  const [voiceModeActive, setVoiceModeActive] = useState(false);
+  const voiceModeRef = useRef(false); // ref mirrors state so callbacks always see the latest value, not a stale closure
+
+  function setVoiceMode(active) {
+    voiceModeRef.current = active;
+    setVoiceModeActive(active);
+    if (!active && recording) {
+      // Stopping voice mode mid-recording should also stop the mic
+      if (language === "en" && recognitionRef.current) recognitionRef.current.stop();
+      setRecording(false);
+    }
+  }
+
+  // Reusable "just start listening" — used both by the manual mic button
+  // and by continuous Voice Mode's auto-restart after each spoken reply.
+  async function startListening() {
+    const isEnglish = language === "en";
+    if (isEnglish) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        alert("Voice input isn't supported in this browser. Try Chrome on desktop or Android.");
+        setVoiceMode(false);
+        return;
+      }
+      const recognition = new SpeechRecognition();
+      recognition.lang = "en-IN";
+      recognition.interimResults = false;
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        setInput(transcript);
+        sendMessage(transcript);
+      };
+      recognition.onerror = () => setRecording(false);
+      recognition.onend = () => setRecording(false);
+      recognitionRef.current = recognition;
+      recognition.start();
+      setRecording(true);
+    } else {
+      try {
+        await startWavRecording();
+        setRecording(true);
+        // Voice Mode has no manual "tap to stop" step — auto-stop after a
+        // fixed pause since we don't have real silence detection. 4 seconds
+        // is a reasonable balance for a short spoken question.
+        if (voiceModeRef.current) {
+          clearTimeout(autoStopTimerRef.current);
+          autoStopTimerRef.current = setTimeout(() => {
+            if (voiceModeRef.current) finishListeningAndSend();
+          }, 4000);
+        }
+      } catch (err) {
+        alert("Couldn't access microphone: " + err.message);
+        setVoiceMode(false);
+      }
+    }
+  }
+
+  async function toggleMic() {
+    const isEnglish = language === "en";
+
+    if (isEnglish) {
+      if (recording) {
+        recognitionRef.current && recognitionRef.current.stop();
+        setRecording(false);
+        return;
+      }
+      await startListening();
+      return;
+    }
+
+    // Assamese / Nepali / Bodo: record raw audio, send to our backend's
+    // Bhashini-backed /api/speech-to-text endpoint
+    if (!recording) {
+      await startListening();
+      return;
+    }
+
+    setRecording(false);
+    setLoading(true);
+    const audioBase64 = await stopWavRecording();
+    try {
+      const res = await fetch(`${BASE_URL}/api/speech-to-text`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ audio: audioBase64, language })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "STT failed");
+      setInput(data.transcript);
+      setLoading(false);
+      sendMessage(data.transcript);
+    } catch (err) {
+      setLoading(false);
+      alert("Voice recognition needs Bhashini configured on the backend (.env). " + err.message);
+    }
+  }
+
+  // For Assamese/Nepali/Bodo, recording is stop-triggered manually (tap mic
+  // again to stop, since there's no native "auto-detect silence" like the
+  // browser's English recognizer). In continuous Voice Mode, we need that
+  // same stop action to happen automatically after a pause — this wraps
+  // stopWavRecording + the STT call, reusable from a silence-timer.
+  async function finishListeningAndSend() {
+    setRecording(false);
+    setLoading(true);
+    const audioBase64 = await stopWavRecording();
+    try {
+      const res = await fetch(`${BASE_URL}/api/speech-to-text`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ audio: audioBase64, language })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "STT failed");
+      setLoading(false);
+      sendMessage(data.transcript);
+    } catch (err) {
+      setLoading(false);
+      alert("Voice recognition needs Bhashini configured on the backend (.env). " + err.message);
+    }
+  }
+
+  async function speak(text, langCode, onEnd) {
+    if (langCode === "en") {
+      if (!window.speechSynthesis) { onEnd && onEnd(); return; }
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = "en-IN";
+      utter.onend = () => onEnd && onEnd();
+      utter.onerror = () => onEnd && onEnd();
+      window.speechSynthesis.speak(utter);
+      return;
+    }
+    // Assamese / Nepali / Bodo: use Bhashini TTS via backend
+    try {
+      const res = await fetch(`${BASE_URL}/api/text-to-speech`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text, language: langCode })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "TTS failed");
+      const audio = new Audio(`data:audio/wav;base64,${data.audio}`);
+      audio.onended = () => onEnd && onEnd();
+      audio.onerror = () => onEnd && onEnd();
+      audio.play();
+    } catch (err) {
+      alert("Voice playback needs Bhashini configured on the backend (.env). " + err.message);
+      onEnd && onEnd();
+    }
+  }
+
+  return (
+    <div className="app">
+      <header className="top">
+        <div className="header-top-row">
+          <div className="eyebrow">OCTAVATE 2026 · PS02 Prototype</div>
+          <div style={{display:"flex", gap:8, alignItems:"center"}}>
+            <button className="emergency-btn" onClick={() => setEmergencyOpen(true)}>🆘 Emergency</button>
+            <button className="dashboard-btn" onClick={openDashboard}>📊 Impact</button>
+            <div className={"status-badge " + (backendStatus)}>
+              <span className="status-dot"></span>
+              {backendStatus === "checking" ? "Checking..." : backendStatus === "online" ? "Backend live" : "Backend offline"}
+            </div>
+          </div>
+        </div>
+        <h1 className="title display">Sahayak</h1>
+        <p className="subtitle">
+          Speech-to-speech multilingual assistant for healthcare, governance,
+          education &amp; rural development — in Assamese, Nepali &amp; Bodo,
+          online or fully offline.
+        </p>
+      </header>
+
+      <div className="controls">
+        {LANGUAGES.map((l) => (
+          <button
+            key={l.code}
+            className={"pill" + (language === l.code ? " active" : "")}
+            onClick={() => setLanguage(l.code)}
+          >
+            {l.label}
+          </button>
+        ))}
+      </div>
+      <div className="controls">
+        {DOMAINS.map((d) => (
+          <button
+            key={d.label}
+            className={"pill domain" + (domain === d.code ? " active" : "")}
+            onClick={() => setDomain(d.code)}
+          >
+            {d.label}
+          </button>
+        ))}
+      </div>
+
+      {domain && (
+        <div className="domain-lock-notice">
+          🔒 Locked to <strong>{DOMAINS.find((d) => d.code === domain)?.label}</strong> — questions on other topics may get mismatched answers.
+          <button onClick={() => setDomain(null)}>Switch to Auto-detect</button>
+        </div>
+      )}
+
+      <div className="edge-row">
+        <label className="switch">
+          <input
+            type="checkbox"
+            checked={edgeMode}
+            onChange={(e) => setEdgeMode(e.target.checked)}
+          />
+          <span className="slider"></span>
+        </label>
+        <div>
+          <div className="edge-label">Edge / Offline Mode</div>
+          <div className="edge-desc">
+            On-device matching, zero network calls — for low-connectivity areas
+          </div>
+        </div>
+      </div>
+
+      {apiError && !edgeMode && (
+        <div className="banner">
+          Backend unreachable — start it with <code>npm start</code> in /backend
+        </div>
+      )}
+
+      <div className="chat" ref={chatRef}>
+        {messages.length === 0 && (
+          <div className="empty">
+            <div className="glyph">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 21c-4-3-8-6.5-8-11a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 4.5-4 8-8 11z"/><path d="M12 21V9"/></svg>
+            </div>
+            <div className="display" style={{ fontSize: 17, marginBottom: 4 }}>
+              Start a conversation
+            </div>
+            <div style={{ fontSize: 13 }}>
+              Try: "How do I apply for a scholarship?" or tap the mic to speak.
+            </div>
+          </div>
+        )}
+        {messages.map((m, i) =>
+          m.role === "user" ? (
+            <div key={i} className="msg user">
+              {m.imagePreview && <img src={m.imagePreview} className="msg-image" alt="uploaded" />}
+              {m.text}
+            </div>
+          ) : (
+            <div key={i} className="msg bot">
+              <div className="native">{m.native}</div>
+              {m.en && m.en !== m.native && <div className="en">{m.en}</div>}
+              {(m.domain || m.edge || m.source) && (
+                <div className="tag-row">
+                  {m.domain && <span className="tag">{m.domain.replace("_", " ")}</span>}
+                  {m.autoFallback && (
+                    <span className="tag" style={{background:"#f4cccc", color:"#990000"}} title="Backend was unreachable — automatically switched to on-device matching">⚡ auto-offline</span>
+                  )}
+                  {m.edge && !m.autoFallback && <span className="tag" style={{background:"#e8dfc0", color:"#8a5a12"}}>on-device</span>}
+                  {m.source === "dataset_grounded" && (
+                    <span className="tag" style={{background:"#d9ead3", color:"#38761d"}} title={m.similarityScore != null ? `Semantic similarity: ${m.similarityScore}` : "Answer grounded in verified government-scheme reference data"}>
+                      ✓ verified{m.similarityScore != null ? ` (${Math.round(m.similarityScore * 100)}%)` : " source"}
+                    </span>
+                  )}
+                  {m.source === "ai_general_knowledge" && (
+                    <span className="tag" style={{background:"#fce5cd", color:"#b45f06"}} title="No exact match in our dataset — Gemini answered from general knowledge. Double-check with an official source.">⚠ general knowledge</span>
+                  )}
+                </div>
+              )}
+              <div className="action-row">
+                {m.native && (
+                  <button className="speak-btn" onClick={() => speak(m.native, m.lang)}>
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{display:"inline", verticalAlign:"-2px", marginRight:4}}><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>Listen
+                  </button>
+                )}
+                {m.domain && OFFICE_SEARCH_TERM[m.domain] && (
+                  <button className="speak-btn" onClick={() => openNearestOffice(m.domain)}>
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{display:"inline", verticalAlign:"-2px", marginRight:4}}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Find nearest office
+                  </button>
+                )}
+                {m.native && !m.checklist && (
+                  <button className="speak-btn" onClick={() => generateChecklist(i, m.native, m.lang)}>
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{display:"inline", verticalAlign:"-2px", marginRight:4}}><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                    {m.checklistLoading ? "Generating..." : "Get checklist"}
+                  </button>
+                )}
+                {m.trace && (
+                  <button className="speak-btn" onClick={() => setMessages((msgs) => msgs.map((msg, mi) => mi === i ? {...msg, traceOpen: !msg.traceOpen} : msg))}>
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{display:"inline", verticalAlign:"-2px", marginRight:4}}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    {m.traceOpen ? "Hide reasoning" : "How I got this"}
+                  </button>
+                )}
+              </div>
+
+              {m.trace && m.traceOpen && (
+                <div className="trace-card">
+                  <div className="trace-title">🔍 Retrieval trace</div>
+                  <div className="trace-row"><strong>Domain:</strong> {m.domain?.replace("_", " ")} <span className="trace-dim">({m.domainConfidence || "classified"})</span></div>
+                  <div className="trace-row"><strong>Search query:</strong> <span className="trace-dim">"{m.trace.retrievalQuery}"</span></div>
+                  {m.trace.candidates.length > 0 ? (
+                    <>
+                      <div className="trace-row" style={{marginTop:6}}><strong>Candidates considered:</strong></div>
+                      {m.trace.candidates.map((c, ci) => (
+                        <div key={ci} className="trace-candidate">
+                          <span className={ci === 0 ? "trace-used" : ""}>{ci === 0 ? "✓ " : "· "}{c.question}</span>
+                          {c.similarityScore != null && <span className="trace-score">{Math.round(c.similarityScore * 100)}%</span>}
+                        </div>
+                      ))}
+                    </>
+                  ) : (
+                    <div className="trace-row trace-dim">No dataset match found — answered from general knowledge.</div>
+                  )}
+                </div>
+              )}
+
+              {m.checklist && m.checklist.length > 0 && (
+                <div className="checklist-card">
+                  <div className="checklist-title">📋 What you'll need</div>
+                  <ul>
+                    {m.checklist.map((item, ci) => <li key={ci}>{item}</li>)}
+                  </ul>
+                </div>
+              )}
+
+              {m.native && (
+                <div className="feedback-row">
+                  <span>Helpful?</span>
+                  <button
+                    className={"feedback-btn" + (m.feedbackGiven === "up" ? " active" : "")}
+                    onClick={() => sendFeedback(i, "up", m.domain, m.lang)}
+                    disabled={!!m.feedbackGiven}
+                  >👍</button>
+                  <button
+                    className={"feedback-btn" + (m.feedbackGiven === "down" ? " active" : "")}
+                    onClick={() => sendFeedback(i, "down", m.domain, m.lang)}
+                    disabled={!!m.feedbackGiven}
+                  >👎</button>
+                  {m.feedbackGiven && <span className="feedback-thanks">Thanks for the feedback!</span>}
+                </div>
+              )}
+            </div>
+          )
+        )}
+        {loading && (
+          <div className="loading">
+            <span className="dot"></span>
+            <span className="dot"></span>
+            <span className="dot"></span>
+            &nbsp;thinking
+          </div>
+        )}
+      </div>
+
+      {voiceModeActive && (
+        <div className="voice-mode-bar">
+          <div className={"voice-mode-orb" + (loading ? " speaking" : recording ? " listening" : "")}></div>
+          <span>{loading ? "Speaking..." : recording ? "Listening..." : "Voice Mode — say something"}</span>
+          <button className="voice-mode-stop" onClick={() => setVoiceMode(false)}>✕ Exit</button>
+        </div>
+      )}
+
+      <div className="composer">
+        <button
+          className={"icon-btn mic" + (recording ? " recording" : "")}
+          onClick={toggleMic}
+          title="Voice input"
+        >
+          {recording ? (
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><rect x="2" y="2" width="12" height="12" rx="2"/></svg>
+          ) : (
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+          )}
+        </button>
+        <button
+          className="icon-btn camera"
+          onClick={() => fileInputRef.current && fileInputRef.current.click()}
+          title="Photograph a document or form"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        </button>
+        <button
+          className="icon-btn voice-mode-toggle"
+          onClick={() => { setVoiceMode(true); startListening(); }}
+          title="Continuous voice conversation"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12h4l3-9 4 18 3-9h4"/></svg>
+        </button>
+        <input
+          type="file"
+          accept="image/*"
+          capture="environment"
+          ref={fileInputRef}
+          style={{ display: "none" }}
+          onChange={handleImageSelect}
+        />
+        <input
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && sendMessage(input)}
+          placeholder="Type your question..."
+        />
+        <button
+          className="icon-btn send"
+          onClick={() => sendMessage(input)}
+          disabled={!input.trim()}
+        >
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+
+      {emergencyOpen && (
+        <div className="modal-overlay" onClick={() => setEmergencyOpen(false)}>
+          <div className="modal-card" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <div className="display" style={{fontSize: 20, fontWeight: 600, color: "#c0392b"}}>🆘 Emergency Contacts</div>
+              <button className="modal-close" onClick={() => setEmergencyOpen(false)}>✕</button>
+            </div>
+            <p style={{fontSize: 13, color: "var(--text-soft)", marginBottom: 14}}>
+              Tap a number to open your phone's dialer directly — verified real helplines, not an automated call.
+            </p>
+            {EMERGENCY_CONTACTS.map((c, i) => (
+              <a key={i} href={`tel:${c.number}`} className="emergency-contact-row">
+                <div>
+                  <div className="emergency-contact-label">{c.label}</div>
+                  <div className="emergency-contact-note">{c.note}</div>
+                </div>
+                <div className="emergency-contact-number">📞 {c.number}</div>
+              </a>
+            ))}
+
+            <div className="stat-section-title" style={{marginTop: 16}}>Your state (optional)</div>
+            <select
+              className="state-select"
+              value={selectedState}
+              onChange={(e) => setSelectedState(e.target.value)}
+            >
+              <option value="">Select a state for local disaster authority info</option>
+              {Object.entries(STATE_DISASTER_INFO).map(([key, s]) => (
+                <option key={key} value={key}>{s.name}</option>
+              ))}
+            </select>
+
+            {selectedState && (() => {
+              const info = STATE_DISASTER_INFO[selectedState];
+              return (
+                <div style={{marginTop: 10}}>
+                  {info.verifiedNumbers.length > 0 ? (
+                    info.verifiedNumbers.map((c, i) => (
+                      <a key={i} href={`tel:${c.number}`} className="emergency-contact-row">
+                        <div>
+                          <div className="emergency-contact-label">{c.label}</div>
+                          <div className="emergency-contact-note">{c.note}</div>
+                        </div>
+                        <div className="emergency-contact-number">📞 {c.number}</div>
+                      </a>
+                    ))
+                  ) : (
+                    <a href={info.website} target="_blank" rel="noopener noreferrer" className="emergency-contact-row">
+                      <div>
+                        <div className="emergency-contact-label">{info.name} Disaster Management Authority</div>
+                        <div className="emergency-contact-note">No independently-verified phone number yet — official website (opens in new tab)</div>
+                      </div>
+                      <div className="emergency-contact-number">🔗 Visit</div>
+                    </a>
+                  )}
+                </div>
+              );
+            })()}
+          </div>
+        </div>
+      )}
+
+      {dashboardOpen && (
+        <div className="modal-overlay" onClick={() => setDashboardOpen(false)}>
+          <div className="modal-card" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <div className="display" style={{fontSize: 20, fontWeight: 600}}>Impact Dashboard</div>
+              <button className="modal-close" onClick={() => setDashboardOpen(false)}>✕</button>
+            </div>
+            {statsLoading && <div style={{padding: "20px 0", color: "var(--text-soft)"}}>Loading...</div>}
+            {!statsLoading && !stats && <div style={{padding: "20px 0", color: "var(--text-soft)"}}>Couldn't load stats — is the backend running?</div>}
+            {!statsLoading && stats && (
+              <div className="stats-body">
+                <div className="stat-big">
+                  <div className="stat-big-number">{stats.totalQueries}</div>
+                  <div className="stat-big-label">Total queries this session</div>
+                </div>
+
+                <div className="stat-section-title">By domain</div>
+                {Object.entries(stats.byDomain).length === 0 && <div className="stat-empty">No queries yet</div>}
+                {Object.entries(stats.byDomain).map(([domain, count]) => (
+                  <div className="stat-bar-row" key={domain}>
+                    <span className="stat-bar-label">{domain.replace("_", " ")}</span>
+                    <div className="stat-bar-track">
+                      <div className="stat-bar-fill" style={{width: `${Math.min(100, (count / stats.totalQueries) * 100)}%`}}></div>
+                    </div>
+                    <span className="stat-bar-count">{count}</span>
+                  </div>
+                ))}
+
+                <div className="stat-section-title">By language</div>
+                {Object.entries(stats.byLanguage).map(([lang, count]) => (
+                  <div className="stat-bar-row" key={lang}>
+                    <span className="stat-bar-label">{LANGUAGES.find(l => l.code === lang)?.label || lang}</span>
+                    <div className="stat-bar-track">
+                      <div className="stat-bar-fill" style={{width: `${Math.min(100, (count / stats.totalQueries) * 100)}%`, background: "var(--marigold)"}}></div>
+                    </div>
+                    <span className="stat-bar-count">{count}</span>
+                  </div>
+                ))}
+
+                <div className="stat-section-title">Resilience</div>
+                <div className="stat-mini-grid">
+                  <div className="stat-mini"><div className="stat-mini-number">{stats.edgeModeQueries}</div><div>Offline-mode queries</div></div>
+                  <div className="stat-mini"><div className="stat-mini-number">{stats.lowResourceQueries}</div><div>Low-resource (Bodo) queries</div></div>
+                </div>
+
+                <div className="stat-section-title">User feedback</div>
+                <div className="stat-mini-grid">
+                  <div className="stat-mini"><div className="stat-mini-number">{stats.feedback.satisfactionRate !== null ? stats.feedback.satisfactionRate + "%" : "—"}</div><div>Satisfaction rate</div></div>
+                  <div className="stat-mini"><div className="stat-mini-number">👍 {stats.feedback.up} · 👎 {stats.feedback.down}</div><div>{stats.feedback.total} ratings total</div></div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
